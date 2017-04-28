@@ -1,0 +1,18 @@
+http:
+  port: 8080
+
+rabbitmq:
+  url: localhost
+  port: 5672
+  queue: foo
+  virtualhost: '/'
+  username: guest
+  password: guest
+  ssl: false
+  verify_ssl: true
+
+database:
+  url: localhost
+  port: 5432
+  username: postgres
+  password: postgres
