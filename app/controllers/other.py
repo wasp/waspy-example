@@ -1,4 +1,6 @@
 import json
+import random
+import string
 
 from waspy import Request, ResponseError, Application
 
@@ -17,7 +19,11 @@ async def error(request: Request):
 
 
 async def callback(request: Request):
-    body = request.json()
+    try:
+        body = request.json()
+    except json.JSONDecodeError:
+        raise ResponseError('Invalid json', 400, reason='Invalid json')
+
     service = body.get('service')
     port = body.get('port')
     path = body.get('path')
@@ -48,6 +54,13 @@ async def callback(request: Request):
              }
     }
 
-
 async def ping(request):
-    return {'result': 'pong '}
+    return {'result': 'pong'}
+
+
+async def large(request):
+    # this currently produces ~ 9.6MB of text/json
+    main = ''.join(random.choice(string.ascii_letters + string.digits)
+                   for _ in range(1000))
+    final = ''.join(main for _ in range(10000))
+    return {'something_large': final}

@@ -2,7 +2,7 @@ import os
 
 from aioamqp.channel import Channel
 from waspy import Application, Config
-from waspy.transports import HTTPTransport, RabbitMQTransport
+from waspy.transports import HTTPToolsTransport, RabbitMQTransport
 
 from . import middlewares
 from .controllers import echo
@@ -22,6 +22,7 @@ async def on_start(app):
 
 
 def add_routes(app):
+    app.router.add_get('/', other.ping)
     app.router.add_get('/ping', other.ping)
     app.router.add_get('/error', other.error)
     app.router.add_post('/callback', other.callback)
@@ -32,12 +33,15 @@ def add_routes(app):
     app.router.add_post('/foo', foo.foo_post)
     app.router.add_delete('/foo/{id}', foo.foo_delete)
     app.router.add_patch('/foo/{id}', foo.foo_patch)
+    app.router.add_get('/large', other.large)
 
 
 def get_app():
     config = Config().from_file(CONFIG_LOCATION)
 
-    http = HTTPTransport(port=config['http']['port'], prefix='')
+    http = HTTPToolsTransport(port=config['http']['port'], prefix='',
+                              shutdown_grace_period=2,
+                              shutdown_wait_period=15)
 
 
     rabbit = RabbitMQTransport(

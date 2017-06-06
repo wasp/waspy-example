@@ -2,7 +2,7 @@
 
 async def foo_get(request):
     foo_id = request.path_params.get('id')
-    return {'foo': {'bar': 'baz', 'id': foo_id}}
+    return {'foo': {'bar': 'baz', 'id': int(foo_id)}}
 
 
 async def foo_put(request):
