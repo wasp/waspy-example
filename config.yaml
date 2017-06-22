@@ -2,6 +2,7 @@ http:
   port: 8080
 
 cors:
+  handle: true
   allowed_origins: 'some.url.example, other.url.example'
   allowed_headers: 'Content-Type, X-Auth-Token, Authorization, X-CSRF-Token, API-Version, Verbose, Cache-Control, X-Requested-With'
   allowed_methods: 'POST, GET, OPTIONS, PUT, DELETE, PATCH'
